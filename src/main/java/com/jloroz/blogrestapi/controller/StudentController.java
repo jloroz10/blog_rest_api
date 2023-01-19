@@ -4,6 +4,7 @@ import com.jloroz.blogrestapi.bean.Student;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -36,4 +37,13 @@ public class StudentController {
 
         return ResponseEntity.ok(new Student(studentId,firstName,lastName));
     }
+
+    @GetMapping("/student/query")
+    public ResponseEntity studentRequestParam(@RequestParam("id") int studentId,
+                                                       @RequestParam("first-name") String firstName,
+                                                       @RequestParam("last-name") String lastName){
+
+        return ResponseEntity.ok(new Student(studentId,firstName,lastName));
+    }
+
 }
