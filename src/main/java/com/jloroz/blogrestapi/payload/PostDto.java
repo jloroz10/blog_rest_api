@@ -3,6 +3,8 @@ package com.jloroz.blogrestapi.payload;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Data
 @NoArgsConstructor
@@ -37,6 +39,7 @@ public class PostDto {
         }
 
         public PostDto build(){
+
             return new PostDto(id, title, description, content);
         }
     }
