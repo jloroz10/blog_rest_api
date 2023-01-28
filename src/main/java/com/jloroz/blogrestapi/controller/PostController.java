@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,9 +33,14 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity getAllPosts(){
+    public ResponseEntity getAllPosts(
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
+    ){
         log.info("calling getAllPosts");
-        return ResponseEntity.ok(this.postService.getAll());
+        return ResponseEntity.ok(this.postService.getAll(pageNumber, pageSize, sortBy, sortDir));
     }
 
     @GetMapping("/{id}")
