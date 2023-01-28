@@ -1,6 +1,6 @@
 package com.jloroz.blogrestapi.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jloroz.blogrestapi.exception.ResourceNotFoundException;
 import com.jloroz.blogrestapi.model.Post;
 import com.jloroz.blogrestapi.payload.PostDto;
 import com.jloroz.blogrestapi.repository.PostRepository;
@@ -43,6 +43,31 @@ public class PostServiceImpl implements PostService {
         return postList.stream()
                 .map(this::mapPostToPostDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public PostDto getPostById(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Post","id",String.valueOf(id)));
+        return mapPostToPostDto(post);
+    }
+
+    @Override
+    public PostDto updatePost(Long id, PostDto postDto) {
+        Post post = postRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Post","id",String.valueOf(id)));
+
+        post.setTitle(postDto.getTitle());
+        post.setDescription(postDto.getDescription());
+        post.setContent(postDto.getContent());
+
+        Post response = postRepository.save(post);
+        return mapPostToPostDto(response);
+
+    }
+
+    @Override
+    public void deletePost(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Post","id",String.valueOf(id)));
+        postRepository.delete(post);
     }
 
     private PostDto mapPostToPostDto(Post post){
