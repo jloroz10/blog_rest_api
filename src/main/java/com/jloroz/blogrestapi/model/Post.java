@@ -2,7 +2,12 @@ package com.jloroz.blogrestapi.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,8 +20,10 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(
         name="posts",
@@ -33,15 +40,16 @@ public class Post {
     @Column(name="content", nullable = false)
     private String content;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments;
 
-    public Post(Long id, String title, String description, String content, Set<Comment> comments) {
-        this.title = title;
-        this.description = description;
-        this.content = content;
-        this.comments = comments;
-        this.id = id;
+    public Post(PostBuilder builder) {
+        this.id = builder.id;
+        this.title = builder.title;
+        this.description =builder. description;
+        this.content = builder.content;
+        this.comments = builder.comments;
     }
 
     public static class PostBuilder{
@@ -77,7 +85,7 @@ public class Post {
         }
 
         public Post build(){
-            return new Post(this.id, this.title,this.description, this.content, this.comments);
+            return new Post(this);
         }
     }
 }

@@ -6,6 +6,7 @@ import com.jloroz.blogrestapi.payload.PostDto;
 import com.jloroz.blogrestapi.payload.PostResponse;
 import com.jloroz.blogrestapi.repository.PostRepository;
 import com.jloroz.blogrestapi.service.PostService;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,10 +22,12 @@ import java.util.stream.Collectors;
 public class PostServiceImpl implements PostService {
     Logger log = LoggerFactory.getLogger(PostServiceImpl.class);
 
-    public PostRepository postRepository;
+    private PostRepository postRepository;
+    private ModelMapper mapper;
 
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository, ModelMapper mapper) {
         this.postRepository = postRepository;
+        this.mapper = mapper;
     }
 
     @Override
@@ -96,19 +98,23 @@ public class PostServiceImpl implements PostService {
     }
 
     private PostDto mapPostToPostDto(Post post){
-        return new PostDto.PostDtoBuilder()
+       /*
+       return new PostDto.PostDtoBuilder()
                 .setId(post.getId())
                 .setTitle(post.getTitle())
                 .setDescription(post.getDescription())
                 .setContent(post.getContent())
-                .build();
+                .build();*/
+        return mapper.map(post, PostDto.class);
     }
 
     private Post mapPostDtoToPost(PostDto postDto) {
+        /*
         return new Post.PostBuilder()
                 .setTitle(postDto.getTitle())
                 .setDescription(postDto.getDescription())
                 .setContent(postDto.getContent())
-                .build();
+                .build();*/
+        return mapper.map(postDto, Post.class);
     }
 }
