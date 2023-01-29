@@ -2,6 +2,7 @@ package com.jloroz.blogrestapi.controller;
 
 import com.jloroz.blogrestapi.payload.PostDto;
 import com.jloroz.blogrestapi.service.PostService;
+import com.jloroz.blogrestapi.util.AppConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -34,10 +35,10 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity getAllPosts(
-            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
-            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
+            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir
     ){
         log.info("calling getAllPosts");
         return ResponseEntity.ok(this.postService.getAll(pageNumber, pageSize, sortBy, sortDir));
